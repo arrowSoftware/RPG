@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30c39c1d887b0f4cb3ec4004733b7af, type: 3}
   m_Name: Hair
   m_EditorClassIdentifier: 
-  name: DefaultHair
+  name: Hair
   icon: {fileID: 0}
   isDefaultItem: 1
   equipmentSlot: 0

@@ -10,7 +10,7 @@ public class Interactable : MonoBehaviour
     public Transform interactionTransform;
 
     public virtual void Interact() {
-        Debug.Log("Interacting with " + transform.name);
+        //Debug.Log("Interacting with " + transform.name);
     }
 
     private void Update() {
