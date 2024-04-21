@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(CharacterStats))]
 public class NameplateUI : MonoBehaviour
@@ -23,6 +24,7 @@ public class NameplateUI : MonoBehaviour
             if (c.renderMode == RenderMode.WorldSpace) {
                 ui = Instantiate(uiPrefab, c.transform).transform;
                 healthSlider = ui.GetChild(0).GetComponent<Image>();
+                ui.GetChild(1).GetComponent<TMP_Text>().SetText(transform.name);
                 ui.gameObject.SetActive(false);
                 break;
             }

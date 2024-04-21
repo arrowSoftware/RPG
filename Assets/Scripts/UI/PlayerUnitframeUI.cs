@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+[RequireComponent(typeof(CharacterStats))]
+public class PlayerUnitframeUI : MonoBehaviour
+{
+    public Transform ui;
+    [Header("Info Bar")]
+    TMP_Text nameText;
+    TMP_Text levelText;
+
+    [Header("Health Bar")]
+    Slider healthSlider;
+    TMP_Text healthTextPercent;
+    TMP_Text healthTextCurrent;
+    int currentHealth = 100;
+    int maxHealth = 100;
+
+    [Header("Power Bar")]
+    Slider powerSlider;
+    TMP_Text powerTextPercent;
+    TMP_Text powerTextCurrent;
+    int currentPower = 100;
+    int maxPower = 100;
+
+    void Start()
+    {
+        GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
+        //GetComponent<CharacterStats>().OnPowerChanged += OnPowerChanged;
+
+        nameText = ui.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        nameText.SetText(transform.name);
+
+        healthSlider = ui.GetChild(1).GetComponent<Slider>();
+        healthTextPercent = ui.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
+        healthTextCurrent = ui.GetChild(1).GetChild(2).GetComponent<TMP_Text>();
+
+        powerSlider = ui.GetChild(2).GetComponent<Slider>();
+        powerTextPercent = ui.GetChild(2).GetChild(1).GetComponent<TMP_Text>();
+        powerTextCurrent = ui.GetChild(2).GetChild(2).GetComponent<TMP_Text>();
+   }
+
+    void OnHealthChanged(int maxHealth, int currentHealth) {
+        float healthPercent = (float)currentHealth / maxHealth;
+        healthSlider.value = healthPercent;
+        healthTextPercent.SetText(((int)(healthPercent * 100)).ToString() + "%");
+        healthTextCurrent.SetText(((int)(healthPercent * maxHealth)).ToString());
+
+        this.currentHealth = currentHealth;
+        this.maxHealth = maxHealth;
+    }
+
+    void OnPowerChanged(int maxPower, int currentPower) {
+        float powerPercent = (float)currentPower / maxPower;
+        powerSlider.value = powerPercent;
+        powerTextPercent.SetText(((int)(powerPercent * 100)).ToString() + "%");
+        powerTextCurrent.SetText(((int)(powerPercent * maxPower)).ToString()); 
+
+        this.currentPower = currentPower;
+        this.maxPower = maxPower;
+    }
+}
