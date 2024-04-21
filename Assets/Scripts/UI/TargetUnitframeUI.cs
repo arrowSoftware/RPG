@@ -5,9 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 
 [RequireComponent(typeof(CharacterStats))]
-public class PlayerUnitframeUI : MonoBehaviour
+[RequireComponent(typeof(TargetSelection))]
+public class TargetUnitframeUI : MonoBehaviour
 {
+    TargetSelection targetSelection;
+
     public Transform ui;
+    public Transform target;
     [Header("Info Bar")]
     TMP_Text nameText;
     TMP_Text levelText;
@@ -28,12 +32,11 @@ public class PlayerUnitframeUI : MonoBehaviour
 
     void Start()
     {
-        GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
-        //GetComponent<CharacterStats>().OnPowerChanged += OnPowerChanged;
-
-        nameText = ui.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-        nameText.SetText(transform.name);
-
+        ui.gameObject.SetActive(false);
+        
+        targetSelection = GetComponent<TargetSelection>();
+        targetSelection.OnTargetSelected += OnTargetSelected;
+    
         healthSlider = ui.GetChild(1).GetComponent<Slider>();
         healthTextPercent = ui.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         healthTextCurrent = ui.GetChild(1).GetChild(2).GetComponent<TMP_Text>();
@@ -61,5 +64,20 @@ public class PlayerUnitframeUI : MonoBehaviour
 
         this.currentPower = currentPower;
         this.maxPower = maxPower;
+    }
+
+    void OnTargetSelected(Transform selection) {
+        if (selection != null) {
+            selection.GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
+            //selection.GetComponent<CharacterStats>().OnPowerChanged += OnPowerChanged;
+
+            nameText = ui.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+            nameText.SetText(selection.name);
+            ui.gameObject.SetActive(true);
+        } else {
+            nameText = ui.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+            nameText.SetText("");
+            ui.gameObject.SetActive(false);
+        }
     }
 }

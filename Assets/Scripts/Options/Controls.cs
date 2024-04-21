@@ -16,4 +16,16 @@ public class Controls
     public ControlBinding autorun;
     public ControlBinding sit;
     public ControlBinding inventory;
+
+    [Header("Action Bar")]
+    public ControlBinding ActionBarSlot1;
+    public ControlBinding ActionBarSlot2;
+    public ControlBinding ActionBarSlot3;
+    public ControlBinding ActionBarSlot4;
+    public ControlBinding ActionBarSlot5;
+    public ControlBinding ActionBarSlot6;
+    public ControlBinding ActionBarSlot7;
+    public ControlBinding ActionBarSlot8;
+    public ControlBinding ActionBarSlot9;
+    public ControlBinding ActionBarSlot10;
 }

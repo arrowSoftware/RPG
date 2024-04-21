@@ -25,6 +25,10 @@ public class NameplateUI : MonoBehaviour
                 ui = Instantiate(uiPrefab, c.transform).transform;
                 healthSlider = ui.GetChild(0).GetComponent<Image>();
                 ui.GetChild(1).GetComponent<TMP_Text>().SetText(transform.name);
+
+                int level = transform.GetComponent<CharacterStats>().level.GetValue();
+                ui.GetChild(3).GetComponent<TMP_Text>().SetText(level.ToString());
+
                 ui.gameObject.SetActive(false);
                 break;
             }
@@ -52,6 +56,8 @@ public class NameplateUI : MonoBehaviour
 
             float healthPercent = (float)currentHealth / maxHealth;
             healthSlider.fillAmount = healthPercent;
+
+            ui.GetChild(2).GetComponent<TMP_Text>().SetText((healthPercent*100).ToString("f1") + "% - " + currentHealth.ToString());
 
             if (currentHealth <= 0) {
                 Destroy(ui.gameObject);

@@ -13,6 +13,8 @@ public class TargetSelection : MonoBehaviour
     public Interactable focus;
     private RaycastHit rayCastHit;
 
+    public event System.Action<Transform> OnTargetSelected;
+
     void Update() {
         if (EventSystem.current.IsPointerOverGameObject()) {
             return;
@@ -29,7 +31,7 @@ public class TargetSelection : MonoBehaviour
             highlight = rayCastHit.transform;
             Interactable interactable = rayCastHit.collider.GetComponent<Interactable>();
 
-            if (interactable != null && highlight != selection) {
+            if (interactable != null /*&& highlight != selection*/) {
                 if (highlight.gameObject.GetComponent<Outline>() != null) {
                     highlight.gameObject.GetComponent<Outline>().enabled = true;
                 } else {
@@ -52,13 +54,15 @@ public class TargetSelection : MonoBehaviour
                 selection = rayCastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 highlight = null;
-            } else {
+                OnTargetSelected(selection);
+            } /*else {
                 if (selection) {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                     selection = null;
+                    OnTargetSelected(null);
                     RemoveFocus();
                 }
-            }
+            }*/
         }
 
         // Right mouse button, interact
@@ -75,12 +79,21 @@ public class TargetSelection : MonoBehaviour
                 if (interactable != null) {
                     SetFocus(interactable);
                 }
-            } else {
+            }/* else {
                 if (selection) {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                     selection = null;
                     RemoveFocus();
                 }
+            }*/
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (selection) {
+                selection.gameObject.GetComponent<Outline>().enabled = false;
+                selection = null;
+                RemoveFocus();
+                OnTargetSelected(null);
             }
         }
     }

@@ -21,6 +21,10 @@ public class CharacterCombat : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
+    public void AttackTarget() {
+        
+    }
+
     public void Attack(CharacterStats targetStats) {
         if (attackCooldown <= 0) {
             targetStats.TakeDamage(myStats.damage.GetValue());

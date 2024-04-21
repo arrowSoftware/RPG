@@ -86,7 +86,8 @@ public class PlayerControls : MonoBehaviour
     [HideInInspector]
     public CameraController mainCam;
     public GameObject inventoryUI;
-
+    public GameObject actionBarUI;
+    
     public enum MoveState {
         locomotion, swimming, flying
     }

@@ -7,6 +7,7 @@ public class CharacterStats : MonoBehaviour
     public int currentHealth {get; private set;}
     public Stat damage;
     public Stat armor;
+    public Stat level;
 
     public event System.Action<int,int> OnHealthChanged;
 
