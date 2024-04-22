@@ -11,6 +11,7 @@ public class CharacterStats : MonoBehaviour
     public Stat level;
     public bool enemy;
     public GameObject floatingTextPrefab;
+    public GameObject playerFloatingTextPrefeb;
 
     public event System.Action<int,int> OnHealthChanged;
 
@@ -39,7 +40,7 @@ public class CharacterStats : MonoBehaviour
 
             // Instantiate floating text
             if (floatingTextPrefab != null) {
-                ShowFlotingText(damage.ToString());
+                ShowFlotingText(damage.ToString(), false);
             }
 
             Debug.Log(transform.name + " Takes " + damage + " damage");
@@ -58,11 +59,16 @@ public class CharacterStats : MonoBehaviour
         if (currentHealth <= maxHealth) {
             currentHealth += amount;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            if (floatingTextPrefab != null) {
+                ShowFlotingText(amount.ToString(), true);
+            }
+
+            if (OnHealthChanged != null) {
+                OnHealthChanged(maxHealth, currentHealth);
+            }
         }
 
-        if (OnHealthChanged != null) {
-            OnHealthChanged(maxHealth, currentHealth);
-        }
     }
 
     public virtual void Die() {
@@ -79,8 +85,21 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public void ShowFlotingText(string text) {
-        floatingTextPrefab.GetComponent<TMP_Text>().SetText(text);
-        Instantiate(floatingTextPrefab, transform.position, Quaternion.identity, transform);
+    public void ShowFlotingText(string text, bool heal) {
+        Vector3 position = transform.position;
+        GameObject floatingText;
+
+        floatingText = Instantiate(floatingTextPrefab, position, Quaternion.identity, transform);
+        floatingText.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().SetText(text);
+
+        if (enemy) {
+            floatingText.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = Color.white;
+        } else {
+            if (heal) {
+                floatingText.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = Color.green;
+            } else {
+                floatingText.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().color = Color.red;
+            }
+        }  
     }
 }
