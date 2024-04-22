@@ -140,7 +140,7 @@ MonoBehaviour:
     m_Bits: 64
   tilt: {fileID: 1828967486}
   cameraAutoFollowSpeed: 0.1
-  cameraMoveState: 2
+  cameraMoveState: 3
   cameraSpeed: 2
 --- !u!1 &1828967485
 GameObject:
@@ -1782,6 +1782,7 @@ GameObject:
   - component: {fileID: 2499142053905893116}
   - component: {fileID: 1348377562}
   - component: {fileID: 1348377572}
+  - component: {fileID: 1348377568}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1929,6 +1930,7 @@ MonoBehaviour:
   swimDirection: {fileID: 3272060052308392281}
   mainCam: {fileID: 0}
   inventoryUI: {fileID: 0}
+  actionBarUI: {fileID: 0}
   moveState: 0
   groundMask:
     serializedVersion: 2
@@ -1986,6 +1988,7 @@ MonoBehaviour:
     baseValue: 0
   level:
     baseValue: 1
+  enemy: 0
 --- !u!195 &1348377559
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2063,6 +2066,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ui: {fileID: 0}
   target: {fileID: 0}
+--- !u!114 &1348377568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3516789948454264168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c1825fcbd2bcf42aa92a34c353016f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3516789948624319823
 GameObject:
   m_ObjectHideFlags: 0

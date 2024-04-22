@@ -21,13 +21,12 @@ public class CharacterCombat : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
-    public void AttackTarget() {
-        
-    }
+    public void AttackTarget() {}
 
     public void Attack(CharacterStats targetStats) {
         if (attackCooldown <= 0) {
-            targetStats.TakeDamage(myStats.damage.GetValue());
+           Debug.Log("Attack");
+           targetStats.TakeDamage(myStats.damage.GetValue());
             StartCoroutine(DoDamage(targetStats, attackDelay));
 
             if (OnAttack != null) {

@@ -7,7 +7,8 @@ using TMPro;
 public class ActionBarUI : MonoBehaviour
 {
     public Transform ui;
-
+    public Ability[] activeAbilities = new Ability[10];
+ 
     GameObject player;
     PlayerControls playerControls;
 
@@ -15,17 +16,8 @@ public class ActionBarUI : MonoBehaviour
 
     KeyButton keyButton;
 
-    Transform actionBarSlot1;
-    Transform actionBarSlot2;
-    Transform actionBarSlot3;
-    Transform actionBarSlot4;
-    Transform actionBarSlot5;
-    Transform actionBarSlot6;
-    Transform actionBarSlot7;
-    Transform actionBarSlot8;
-    Transform actionBarSlot9;
-    Transform actionBarSlot10;
-
+    Transform[] actionBarSlots = new Transform[10];
+    ControlBinding[] slotBindings = new ControlBinding[10];
 
     string GetKeyCodeString(KeyCode keyCode) {
         switch (keyCode) {
@@ -43,56 +35,34 @@ public class ActionBarUI : MonoBehaviour
         return keyCode.ToString();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         player = PlayerManager.instance.player;
         playerControls = player.GetComponent<PlayerControls>();
 
-        actionBarSlot1 = ui.GetChild(0);
-        actionBarKeybindText = actionBarSlot1.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot1.primary[0]));
-        keyButton = actionBarSlot1.GetChild(0).GetComponent<KeyButton>();
-        keyButton.SetBind(playerControls.controls.ActionBarSlot1);
+        slotBindings[0] = playerControls.controls.ActionBarSlot1;
+        slotBindings[1] = playerControls.controls.ActionBarSlot2;
+        slotBindings[2] = playerControls.controls.ActionBarSlot3;
+        slotBindings[3] = playerControls.controls.ActionBarSlot4;
+        slotBindings[4] = playerControls.controls.ActionBarSlot5;
+        slotBindings[5] = playerControls.controls.ActionBarSlot6;
+        slotBindings[6] = playerControls.controls.ActionBarSlot7;
+        slotBindings[7] = playerControls.controls.ActionBarSlot8;
+        slotBindings[8] = playerControls.controls.ActionBarSlot9;
+        slotBindings[9] = playerControls.controls.ActionBarSlot10;
 
-        actionBarSlot2 = ui.GetChild(1);
-        actionBarKeybindText = actionBarSlot2.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot2.primary[0]));
-
-        actionBarSlot3 = ui.GetChild(2);
-        actionBarKeybindText = actionBarSlot3.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot3.primary[0]));
-
-        actionBarSlot4 = ui.GetChild(3);
-        actionBarKeybindText = actionBarSlot4.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot4.primary[0]));
-
-        actionBarSlot5 = ui.GetChild(4);
-        actionBarKeybindText = actionBarSlot5.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot5.primary[0]));
-
-        actionBarSlot6 = ui.GetChild(5);
-        actionBarKeybindText = actionBarSlot6.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot6.primary[0]));
-
-        actionBarSlot7 = ui.GetChild(6);
-        actionBarKeybindText = actionBarSlot7.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot7.primary[0]));
-
-        actionBarSlot8 = ui.GetChild(7);
-        actionBarKeybindText = actionBarSlot8.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot8.primary[0]));
-
-        actionBarSlot9 = ui.GetChild(8);
-        actionBarKeybindText = actionBarSlot9.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot9.primary[0]));
-
-        actionBarSlot10 = ui.GetChild(9);
-        actionBarKeybindText = actionBarSlot10.GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
-        actionBarKeybindText.SetText(GetKeyCodeString(playerControls.controls.ActionBarSlot10.primary[0]));
-    }
-
-    public void nothing() {
-        Debug.Log("Pressed");
+        for (int i = 0; i < 10; i++) {
+            actionBarSlots[i] = ui.GetChild(i);
+            TMP_Text keyBindText = actionBarSlots[i].GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+            keyBindText.SetText(GetKeyCodeString(slotBindings[i].primary[0]));
+            KeyButton keyButton = actionBarSlots[i].GetChild(0).GetComponent<KeyButton>();
+            keyButton.SetBind(slotBindings[i]);
+        
+            if (activeAbilities[i] != null) {
+                actionBarSlots[i].GetChild(0).GetChild(0).GetComponent<Image>().sprite = activeAbilities[i].icon;
+                actionBarSlots[i].GetChild(0).GetChild(0).GetComponent<Image>().enabled = true;
+                actionBarSlots[i].GetChild(0).GetComponent<KeyButton>().ability = activeAbilities[i];
+            }
+        }
     }
 }

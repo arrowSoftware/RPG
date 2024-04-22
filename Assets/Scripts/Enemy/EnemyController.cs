@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    // TODO fix speed, define speed variables faster when aggroed, slower when patrolling, fast af when resetting
     public float leashRadius = 30.0f;
 
     [Header("Patrolling")]
@@ -19,10 +20,12 @@ public class EnemyController : MonoBehaviour
     [Range(1,360)]
     public float viewAngle = 45;
     public bool canSeePlayer;
+    public float attackRange = 4;
 
     Transform target;
     NavMeshAgent agent;
     CharacterCombat combat;
+    CharacterStats stats;
 
     bool aggroed = false;
     bool resetting = false;
@@ -36,6 +39,7 @@ public class EnemyController : MonoBehaviour
         target = PlayerManager.instance.player.transform;
         aggroPoint = transform.position;
         combat = GetComponent<CharacterCombat>();
+        stats = GetComponent<EnemyStats>();
     }
 
     bool Patrol() {
@@ -64,8 +68,15 @@ public class EnemyController : MonoBehaviour
         return false;
     }
 
+    public void Aggro(Transform player) {
+        if (!aggroed && !resetting) {
+            target = player;
+            aggroed = true;
+            aggroPoint = transform.position;
+            agent.speed = 6;
+        }
+    }
 
-    // Update is called once per frame
     void Update()
     {
         // If patrolling
@@ -81,13 +92,14 @@ public class EnemyController : MonoBehaviour
         if (distanceToSpawn <= 2 && resetting) {
             resetting = false;
             agent.speed /= 2;
+            stats.SetImmune(false);
         }
 
         // Player aggroed this enemy, move to the player
         if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2) {
             if (distance <= aggroRadius && !resetting && !aggroed) {
                 aggroed = true;
-                agent.speed = 3;
+                agent.speed = 6;
                 aggroPoint = transform.position;
             }
         }
@@ -97,8 +109,8 @@ public class EnemyController : MonoBehaviour
 
         if (aggroed) {
             agent.SetDestination(target.position);
-
-            if (distance <= agent.stoppingDistance) {
+            
+            if (distance <= attackRange) {
                 // attack
                 CharacterStats targetStats = target.GetComponent<CharacterStats>();
                 if (targetStats != null) {
@@ -115,6 +127,8 @@ public class EnemyController : MonoBehaviour
                 FaceTarget(aggroPoint);
                 aggroed = false;
                 resetting = true;
+                stats.ResetHealth();
+                stats.SetImmune(true);
             }
         }
 
