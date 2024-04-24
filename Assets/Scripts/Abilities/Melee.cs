@@ -7,6 +7,8 @@ public class Melee : Ability
 {
     CharacterStats playerStats;
     CharacterStats targetStats;
+    bool crit = false;
+    public StatusEffectData statusEffect;
 
     public override void Activate(Transform player, Transform target) {
         Debug.Log(player.name + " uses Melee on " + target.name);
@@ -19,7 +21,19 @@ public class Melee : Ability
         // If within range, attack
         if (distance <= maxRange) {
             target.gameObject.GetComponent<EnemyController>().Aggro(player);
-            targetStats.TakeDamage(playerStats.damage.GetValue());
+            int damage = playerStats.damage.GetValue();
+            int critRoll = Random.Range(0, 100);
+            if (critRoll <= playerStats.criticalChance.GetValue()) {
+                damage *= 2;
+                crit = true;                
+            }
+            var effectable = target.GetComponent<IEffectable>();
+            if (effectable != null) {
+                effectable.ApplyEffect(statusEffect);
+            }
+            targetStats.TakeDamage(damage, this, crit);
+            // reset crit
+            crit = false;
         } else {
             GameManager.instance.SetWarning();
         }

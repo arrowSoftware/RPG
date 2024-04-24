@@ -11,6 +11,7 @@ public class NameplateUI : MonoBehaviour
     public Transform target;
     float visibleTime = 5.0f; // Time to keep naeplate active after not taking damge.
     float lastMadeVisibleTime;
+    public Canvas canvas;
 
     Transform ui;
     Image healthSlider;
@@ -20,19 +21,14 @@ public class NameplateUI : MonoBehaviour
     {
         cam = Camera.main.transform;
 
-        foreach(Canvas c in FindObjectsOfType<Canvas>()) {
-            if (c.renderMode == RenderMode.WorldSpace) {
-                ui = Instantiate(uiPrefab, c.transform).transform;
-                healthSlider = ui.GetChild(0).GetComponent<Image>();
-                ui.GetChild(1).GetComponent<TMP_Text>().SetText(transform.name);
+        ui = Instantiate(uiPrefab, canvas.transform).transform;
+        healthSlider = ui.GetChild(0).GetComponent<Image>();
+        ui.GetChild(1).GetComponent<TMP_Text>().SetText(transform.name);
 
-                int level = transform.GetComponent<CharacterStats>().level.GetValue();
-                ui.GetChild(3).GetComponent<TMP_Text>().SetText(level.ToString());
+        int level = transform.GetComponent<CharacterStats>().level.GetValue();
+        ui.GetChild(3).GetComponent<TMP_Text>().SetText(level.ToString());
 
-                ui.gameObject.SetActive(false);
-                break;
-            }
-        }
+        ui.gameObject.SetActive(false);
 
         GetComponent<CharacterStats>().OnHealthChanged += OnHealthChanged;
     }

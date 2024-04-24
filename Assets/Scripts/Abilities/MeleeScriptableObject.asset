@@ -17,3 +17,4 @@ MonoBehaviour:
   activeTime: 1
   maxRange: 4
   icon: {fileID: 21300000, guid: f8a9ce953763ac94e965dcd2b539538e, type: 3}
+  statusEffect: {fileID: 11400000, guid: a950791899490fe49b6060a3f66cbe08, type: 2}

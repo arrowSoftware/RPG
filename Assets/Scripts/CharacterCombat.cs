@@ -25,8 +25,6 @@ public class CharacterCombat : MonoBehaviour
 
     public void Attack(CharacterStats targetStats) {
         if (attackCooldown <= 0) {
-           Debug.Log("Attack");
-           targetStats.TakeDamage(myStats.damage.GetValue());
             StartCoroutine(DoDamage(targetStats, attackDelay));
 
             if (OnAttack != null) {
@@ -38,6 +36,6 @@ public class CharacterCombat : MonoBehaviour
 
     IEnumerator DoDamage(CharacterStats stats, float delay) {
         yield return new WaitForSeconds(delay);
-        stats.TakeDamage(myStats.damage.GetValue());
+        stats.TakeDamage(myStats.damage.GetValue(), null, false);
     }
 }
